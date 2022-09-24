@@ -31,7 +31,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="center_vertical"
+        android:background="@color/actionBar">
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -39,6 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
+            android:background="@color/actionBar"
             android:indeterminate="true"
             android:indeterminateTint="@color/primary" />
     </FrameLayout>
