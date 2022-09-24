@@ -8,14 +8,21 @@
         android:title="Settings"
         app:showAsAction="always" />
     <group android:menuCategory="container">
+        <item android:title="Debug Log Files">
+            <menu>
+                <item
+                    android:id="@+id/menu_clear_trainers_item"
+                    android:title="Clear Trainers"></item>
+                <item
+                    android:id="@+id/menu_clear_trainees_item"
+                    android:title="Clear Trainees" />
+                <item
+                    android:id="@+id/menu_clear_feedback_item"
+                    android:title="Clear Feedback" />
+            </menu>
+        </item>
         <item
-            android:id="@+id/menu_clear_trainers_item"
-            android:title="Clear Trainers"></item>
-        <item
-            android:id="@+id/menu_clear_trainees_item"
-            android:title="Clear Trainees" />
-        <item
-            android:id="@+id/menu_clear_feedback_item"
-            android:title="Clear Feedback" />
+            android:id="@+id/menu_swap_manual_ui"
+            android:title="Swap Manual UI" />
     </group>
 </menu>

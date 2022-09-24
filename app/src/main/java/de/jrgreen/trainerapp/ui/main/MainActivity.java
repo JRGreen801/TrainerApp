@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.Preference;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -42,12 +43,15 @@ import de.jrgreen.trainerapp.ui.main.fragment.InspectFeedbackFragment;
 import de.jrgreen.trainerapp.ui.main.fragment.SelectionFragment;
 import de.jrgreen.trainerapp.ui.main.fragment.SettingsFragment;
 import de.jrgreen.trainerapp.ui.main.fragment.StartFragment;
+import de.jrgreen.trainerapp.ui.main.fragment.TrainerManualFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private final int READ_EXTERNAL_STORAGE_PERMISSION_CODE = 23;
     public ProgressBar progressBar;
     private Runnable runnable1;
+
+    private boolean MANUAL_DROPDOWN_UI = true; // true=DropDownUI false=ImageLinkUI
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +154,14 @@ public class MainActivity extends AppCompatActivity {
                 FileHelper.clearFIle("feedback");
                 FeedbackList.get().clear();
                 break;
+            case R.id.menu_swap_manual_ui:
+                TrainerManualFragment.DROPDOWN_UI = !TrainerManualFragment.DROPDOWN_UI;
+                f = getSupportFragmentManager().findFragmentById(R.id.frameContainer);
+                if (f instanceof TrainerManualFragment){
+                    getSupportFragmentManager().beginTransaction().detach(f).commitNow();
+                    getSupportFragmentManager().beginTransaction().attach(f).commitNow();
+                }
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -160,6 +172,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frameContainer);
         if (f == null) {
+            finish();
+        } else if (f instanceof StartFragment){
             finish();
         } else if (f instanceof SelectionFragment){
             getSupportFragmentManager().beginTransaction()
@@ -176,6 +190,10 @@ public class MainActivity extends AppCompatActivity {
         } else if (f instanceof SettingsFragment) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frameContainer, new SelectionFragment())
+                    .commitNow();
+        } else if (f instanceof TrainerManualFragment) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frameContainer, new StartFragment())
                     .commitNow();
         }
         return true;

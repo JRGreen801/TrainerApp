@@ -7,33 +7,48 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import de.jrgreen.trainerapp.R;
 
 public class TrainerManualFragment extends Fragment {
 
-    public TrainerManualFragment() {}
+    public static boolean DROPDOWN_UI = true;
+
+    public TrainerManualFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_trainer_manual, container, false);
+        if (DROPDOWN_UI){
+           return buildDropDownUI(inflater, container);
+        }
+        else {
+            return buildImageLinkUI(inflater, container);
+        }
+
+    }
+
+    private View buildImageLinkUI(LayoutInflater inflater, ViewGroup container) {
+        View view = inflater.inflate(R.layout.fragment_trainer_manual_imagelink_ui, container, false);
+        return view;
+    }
+
+    private View buildDropDownUI(LayoutInflater inflater, ViewGroup container) {
+        View view = inflater.inflate(R.layout.fragment_trainer_manual_dropdown_ui, container, false);
 
         View training_manual_dropButton = view.findViewById(R.id.training_manual_dropButton);
-        ImageView training_manual_dropImg = view.findViewById(R.id.training_manual_dropImg);
+        ImageView training_manual_dropImg = view.findViewById(R.id.training_manual_Img);
         View training_manual_container = view.findViewById(R.id.training_manual_layout);
 
         View topic_manual_dropButton = view.findViewById(R.id.topic_manual_dropButton);
-        ImageView topic_manual_dropImg = view.findViewById(R.id.topic_manual_dropImg);
+        ImageView topic_manual_dropImg = view.findViewById(R.id.topic_manual_Img);
         View topic_manual_container = view.findViewById(R.id.topic_manual_layout);
 
         View detail_manual_dropButton = view.findViewById(R.id.detail_manual_dropButton);
-        ImageView detail_manual_dropImg = view.findViewById(R.id.detail_manual_dropImg);
+        ImageView detail_manual_dropImg = view.findViewById(R.id.detail_manual_Img);
         View detail_manual_container = view.findViewById(R.id.detail_manual_layout);
 
         training_manual_dropButton.setOnClickListener(new View.OnClickListener() {

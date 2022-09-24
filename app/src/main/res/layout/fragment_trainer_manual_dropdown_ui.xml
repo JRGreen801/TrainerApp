@@ -39,7 +39,7 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:id="@+id/training_manual_dropImg"
+                    android:id="@+id/training_manual_Img"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -83,7 +83,7 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:id="@+id/topic_manual_dropImg"
+                    android:id="@+id/topic_manual_Img"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -112,7 +112,6 @@
                 android:id="@+id/detail_manual_dropButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="10"
                 android:background="@drawable/border"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -128,7 +127,7 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:id="@+id/detail_manual_dropImg"
+                    android:id="@+id/detail_manual_Img"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
