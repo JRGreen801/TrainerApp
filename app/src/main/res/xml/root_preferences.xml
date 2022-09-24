@@ -1,0 +1,9 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <SwitchPreference
+        android:defaultValue="false"
+        android:icon="@drawable/ic_baseline_compare_24"
+        android:key="night_theme_switch_preference"
+        android:summary="Enables dark/night mode"
+        android:title="Dark Theme" />
+</PreferenceScreen>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">@color/ovalButton</item>
+
+        <!-- Used for the background -->
+        <item name="android:background">@drawable/border</item>
+    </style>
+</resources>

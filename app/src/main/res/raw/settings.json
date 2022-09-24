@@ -1,0 +1,42 @@
+{
+  "topics": [
+    {
+      "_short": "TP",
+      "text": "Hubflow - Trip Vorbereitung"
+    },
+    {
+      "_short": "DS",
+      "text": "Fahrverhalten / Fahrsicherheit"
+    },
+    {
+      "_short": "DP",
+      "text": "Lieferprozess"
+    },
+    {
+      "_short": "CS",
+      "text": "Kundengespräche"
+    },
+    {
+      "_short": "TA",
+      "text": "Hubflow - Trip Nachbereitung"
+    }
+  ],
+  "details": [
+    {
+      "_short": "FO",
+      "text": "First Order"
+    },
+    {
+      "_short": "ST",
+      "text": "Split-Tote"
+    },
+    {
+      "_short": "LT",
+      "text": "Log-Tags"
+    },
+    {
+      "_short": "PF",
+      "text": "Pfandfreie Flaschen"
+    }
+  ]
+}
