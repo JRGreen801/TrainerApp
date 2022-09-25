@@ -72,17 +72,20 @@ public class MainActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         final int[] progress = {0};
 
-
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frameContainer, new StartFragment(false))
+                .commit();
 
         Runnable runnable2 = new Runnable() {
             @Override
             public void run() {
-                Log.e("STEP" ,"2");
+                Log.e("STEP", "2");
                 Log.e("FEEDBACK LENGTH", String.valueOf(FeedbackList.get().size()));
+                StartFragment sf = (StartFragment) getSupportFragmentManager().findFragmentById(R.id.frameContainer);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frameContainer, new StartFragment())
+                        .replace(R.id.frameContainer, new StartFragment(true))
                         .commit();
-                }
+            }
         };
 
         runnable1 = new Runnable() {
@@ -177,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         } else if (f instanceof SelectionFragment){
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frameContainer, new StartFragment())
+                    .replace(R.id.frameContainer, new StartFragment(true))
                     .commitNow();
         } else if (f instanceof InspectFeedbackFragment){
             getSupportFragmentManager().beginTransaction()
@@ -193,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                     .commitNow();
         } else if (f instanceof TrainerManualFragment) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frameContainer, new StartFragment())
+                    .replace(R.id.frameContainer, new StartFragment(true))
                     .commitNow();
         }
         return true;

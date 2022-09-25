@@ -13,8 +13,14 @@ import de.jrgreen.trainerapp.R;
 
 public class StartFragment extends Fragment {
 
+    private Button feedbackIOButton;
+    private Button trainerManualButton;
 
-    public StartFragment() {}
+    private boolean buttonsEnabled;
+
+    public StartFragment(boolean enabled) {
+        buttonsEnabled = enabled;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -22,8 +28,10 @@ public class StartFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_start, container, false);
 
-        Button feedbackIOButton = view.findViewById(R.id.feedback_io_button);
-        Button trainerManualButton = view.findViewById(R.id.trainer_manual_button);
+        feedbackIOButton = view.findViewById(R.id.feedback_io_button);
+        trainerManualButton = view.findViewById(R.id.trainer_manual_button);
+
+        setButtonsEnabled(buttonsEnabled);
 
         feedbackIOButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,5 +51,10 @@ public class StartFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void setButtonsEnabled(boolean enabled){
+        feedbackIOButton.setEnabled(enabled);
+        trainerManualButton.setEnabled(enabled);
     }
 }
