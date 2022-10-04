@@ -1,5 +1,5 @@
 package de.jrgreen.trainerapp.listener;
 
 public interface OnRequestResultListener {
-    void onResult();
+    void onResult(String response);
 }

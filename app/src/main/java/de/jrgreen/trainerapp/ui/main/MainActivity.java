@@ -1,30 +1,20 @@
 package de.jrgreen.trainerapp.ui.main;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.preference.Preference;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.google.android.material.progressindicator.CircularProgressIndicator;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -32,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 import de.jrgreen.trainerapp.R;
 import de.jrgreen.trainerapp.helper.FileHelper;
 import de.jrgreen.trainerapp.helper.SheetHelper;
-import de.jrgreen.trainerapp.object.Feedback;
+import de.jrgreen.trainerapp.listener.OnRequestResultListener;
 import de.jrgreen.trainerapp.object.FeedbackList;
 import de.jrgreen.trainerapp.object.RunnerList;
 import de.jrgreen.trainerapp.object.Settings;
@@ -49,19 +39,21 @@ public class MainActivity extends AppCompatActivity {
 
     private final int READ_EXTERNAL_STORAGE_PERMISSION_CODE = 23;
     public ProgressBar progressBar;
-    private Runnable runnable1;
 
     private boolean MANUAL_DROPDOWN_UI = true; // true=DropDownUI false=ImageLinkUI
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 READ_EXTERNAL_STORAGE_PERMISSION_CODE);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -70,45 +62,39 @@ public class MainActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
-        final int[] progress = {0};
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frameContainer, new StartFragment(false))
                 .commit();
 
-        Runnable runnable2 = new Runnable() {
-            @Override
-            public void run() {
-                Log.e("STEP", "2");
-                Log.e("FEEDBACK LENGTH", String.valueOf(FeedbackList.get().size()));
-                StartFragment sf = (StartFragment) getSupportFragmentManager().findFragmentById(R.id.frameContainer);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frameContainer, new StartFragment(true))
-                        .commit();
-            }
-        };
+        SheetHelper sheetHelper = new SheetHelper(MainActivity.this);
 
-        runnable1 = new Runnable() {
+        sheetHelper.loadRunner(new OnRequestResultListener() {
             @Override
-            public void run() {
+            public void onResult(String response) {
+                RunnerList.set(sheetHelper.CSVtoRunnerList(response));
                 getSupportActionBar().setHomeButtonEnabled(false);
                 TrainerList.set(RunnerList.getTrainers());
                 TraineeList.set(RunnerList.getTrainees());
                 Log.e("STEP" ,"1");
-                SheetHelper.loadFeedback(MainActivity.this, runnable2, progressBar);
+                sheetHelper.loadFeedback(new OnRequestResultListener() {
+                    @Override
+                    public void onResult(String response) {
+                        Log.e("STEP", "2");
+                        Log.e("FEEDBACK LENGTH", String.valueOf(FeedbackList.get().size()));
+                        FeedbackList.set(sheetHelper.CSVtoFeedbackList(response));
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.frameContainer, new StartFragment(true))
+                                .commit();
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
             }
-        };
-
-        SheetHelper.loadRunner(MainActivity.this , runnable1);
-
+        });
 
         ExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                Settings.set(FileHelper.convertJsonToSettings(MainActivity.this));
-                //FeedbackList.set(FileHelper.convertJsonToFeedbackList(MainActivity.this));
-            }
+        executor.execute(() -> {
+            Settings.set(FileHelper.convertJsonToSettings(MainActivity.this));
         });
         executor.shutdown();
         try {

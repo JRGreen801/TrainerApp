@@ -1,85 +1,56 @@
 package de.jrgreen.trainerapp.helper;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import de.jrgreen.trainerapp.R;
 import de.jrgreen.trainerapp.listener.OnRequestResultListener;
 import de.jrgreen.trainerapp.object.Feedback;
-import de.jrgreen.trainerapp.object.FeedbackList;
 import de.jrgreen.trainerapp.object.Rating;
 import de.jrgreen.trainerapp.object.Runner;
-import de.jrgreen.trainerapp.object.RunnerList;
-import de.jrgreen.trainerapp.object.Settings;
 import de.jrgreen.trainerapp.object.Trainee;
 import de.jrgreen.trainerapp.object.TraineeList;
 import de.jrgreen.trainerapp.object.Trainer;
 import de.jrgreen.trainerapp.object.TrainerList;
-import de.jrgreen.trainerapp.ui.main.MainActivity;
-import de.jrgreen.trainerapp.ui.main.fragment.SelectionFragment;
-import de.jrgreen.trainerapp.ui.main.fragment.SettingsFragment;
 
 public class SheetHelper {
-    /*
-    * ADDED RequestQueue start and stop
-    * SET Should Cache to FALSE
-    *
-    * MainActivity needs to do progressbar stuff
-    * */
 
-    public static void loadRunner(Context context, Runnable runnable){
+    private static final String RUNNERSHEET_GET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTAa_8Q7SXb-E8ai0MtVCMNR3s1S_WAecJR7nyULdMNQv1Hc545TekTFO4VyW-uWjVEcG1ADFZfGCnA/pub?gid=0&single=true&output=csv";
+    private static final String FEEDBACKSHEET_GET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTxbmLB_U2SN5e8LEY5YHTQVWxgOiGlTw555MWTrC6uUgmX8raf4pP0WvXo1uFMFnz1T5uPKdnSwSa4/pub?gid=0&single=true&output=csv";
+    private static final String FEEDBACKSHEET_POST_URL = "https://script.google.com/macros/s/AKfycbx3GEBuKi4ap44Oo-s0kcezPobey4dwdCcXksm6QzqZA2yZy0Pde_zMg6wLmGY5zrK3/exec";
+
+    private Context context;
+
+    public SheetHelper(Context context) {
+        this.context = context;
+    }
+
+
+    public void loadRunner(OnRequestResultListener onRequestResultListener){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://docs.google.com/spreadsheets/d/e/2PACX-1vTAa_8Q7SXb-E8ai0MtVCMNR3s1S_WAecJR7nyULdMNQv1Hc545TekTFO4VyW-uWjVEcG1ADFZfGCnA/pub?gid=0&single=true&output=csv", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                requestQueue.stop();
-                RunnerList.set(CSVtoRunnerList(response));
-                ExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-                executor.execute(runnable);
-                executor.shutdown();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, RUNNERSHEET_GET_URL, response -> {
+            requestQueue.stop();
+            onRequestResultListener.onResult(response);
 
-            }
+
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -98,56 +69,19 @@ public class SheetHelper {
         return;
     }
 
-    public static void requestJson(){
-        JsonRequest<RunnerList> jsonRequest = new JsonRequest(Request.Method.GET, "", null, new Response.Listener<RunnerList>() {
-            @Override
-            public void onResponse(RunnerList response) {
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }) {
-            @Override
-            protected Response parseNetworkResponse(NetworkResponse response) {
-                return null;
-            }
-
-            @Override
-            public int compareTo(Object o) {
-                return 0;
-            }
-        };
-    }
-
-
-    public static void loadFeedback(Context context, Runnable runnable, ProgressBar progressBar){
+    public void loadFeedback(OnRequestResultListener onRequestResultListener){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://docs.google.com/spreadsheets/d/e/2PACX-1vTxbmLB_U2SN5e8LEY5YHTQVWxgOiGlTw555MWTrC6uUgmX8raf4pP0WvXo1uFMFnz1T5uPKdnSwSa4/pub?gid=0&single=true&output=csv", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, FEEDBACKSHEET_GET_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 requestQueue.stop();
-                FeedbackList.set(CSVtoFeedbackList(response));
-                ArrayList<Feedback> backup = FileHelper.convertJsonToFeedbackList(context);
-                if (FeedbackList.get().size() == 0){
-                   // FeedbackList.set(backup);
-                    Log.e("FEEDBACK NULL", "true");
-                } else {
-                    Log.e("FEEDBACK NULL", "false");
-                }
-                ExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-                executor.execute(runnable);
-                executor.shutdown();
-                progressBar.setVisibility(View.GONE);
+                onRequestResultListener.onResult(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 requestQueue.stop();
-                progressBar.setVisibility(View.GONE);
                 Log.e("ERROR", error.toString());
             }
         });
@@ -163,7 +97,7 @@ public class SheetHelper {
         return;
     }
 
-    public static ArrayList<Runner> CSVtoRunnerList(String csv){
+    public ArrayList<Runner> CSVtoRunnerList(String csv){
         ArrayList<Runner> runners = new ArrayList<Runner>();
         ArrayList<String> runnersCSV = new ArrayList<>();
 
@@ -226,7 +160,7 @@ public class SheetHelper {
 
     public static void postFeedback(Context context, Feedback feedback, ProgressBar progressBar){
         progressBar.setVisibility(View.VISIBLE);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbx3GEBuKi4ap44Oo-s0kcezPobey4dwdCcXksm6QzqZA2yZy0Pde_zMg6wLmGY5zrK3/exec",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, FEEDBACKSHEET_POST_URL,
             new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -270,5 +204,4 @@ public class SheetHelper {
 
         return;
     }
-
 }

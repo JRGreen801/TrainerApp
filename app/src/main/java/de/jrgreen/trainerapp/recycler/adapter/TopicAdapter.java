@@ -24,12 +24,26 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicViewHolder> {
 
     private OnRatingChangeListener ratingChangeListener;
 
+    /**
+     * Used when Feedback should be edited and submitted
+     *
+     * @param selectedRatings Ratings that should be displayed
+     * @param selectedTrainee Selected Trainee the Feedback sould be assigned to
+     * @param ratingChangeListener
+     */
     public TopicAdapter(SelectedRatings selectedRatings, Trainee selectedTrainee, OnRatingChangeListener ratingChangeListener) {
         super();
         this.selectedRatings = selectedRatings;
         this.selectedTrainee = selectedTrainee;
         this.ratingChangeListener = ratingChangeListener;
     }
+
+    /**
+     * Used when Feedback should only be displayed
+     *
+     * @param selectedRatings that should be displayed
+     * @param selectedTrainee Selected Trainee whose Name should be displayed
+     */
     public TopicAdapter(SelectedRatings selectedRatings, Trainee selectedTrainee) {
         super();
         this.selectedRatings = selectedRatings;
