@@ -191,20 +191,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        FileHelper.backupToJson("feedback",FeedbackList.get());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-       FileHelper.backupToJson("feedback",FeedbackList.get());
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("BACKUP", String.valueOf(FileHelper.convertJsonToFeedbackList(MainActivity.this).size()));
-
     }
 }

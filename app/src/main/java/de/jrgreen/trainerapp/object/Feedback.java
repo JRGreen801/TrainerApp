@@ -2,6 +2,11 @@ package de.jrgreen.trainerapp.object;
 
 import java.util.ArrayList;
 
+/**
+ * Describes a Row in the Feedback sheet as an Object.
+ * @see de.jrgreen.trainerapp.helper.SheetHelper post / get
+ * @see Rating
+ */
 public class Feedback {
     private Trainee trainee;
     private Trainer trainer;

@@ -3,6 +3,13 @@ package de.jrgreen.trainerapp.object;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Settings class is used to get the structure and amount of feedback topics and details to display / send.
+ *
+ * TODO: May be deleted; and structure for feedback will be imported from the Sheet directly.
+ * @see de.jrgreen.trainerapp.helper.SheetHelper settings may be done here in future.
+ *
+ */
 public class Settings {
     private static Settings instance;
 
@@ -10,8 +17,6 @@ public class Settings {
     public int detailCount;
     public List<Topic> topics;
     public List<Detail> details;
-
-    private Settings(){}
 
     private Settings(List<Topic> topics, List<Detail> details) {
         this.topics = topics;

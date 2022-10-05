@@ -95,9 +95,6 @@ public class AddFeedbackFragment extends Fragment {
                 dialogInterface.dismiss();
                 date = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
 
-                FileHelper.saveToJson(getContext(),
-                    new Feedback(date, selectedTrainee, selectedTrainer, selectedRatings, input.getText().toString()));
-                FeedbackList.get().add(new Feedback(date, selectedTrainee, selectedTrainer, selectedRatings, input.getText().toString()));
                 SheetHelper.postFeedback(getActivity(), new Feedback(date, selectedTrainee, selectedTrainer, selectedRatings,input.getText().toString()), progressBar);
 
                 if (viewInfalted.getParent() != null){

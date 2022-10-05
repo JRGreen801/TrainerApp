@@ -30,6 +30,20 @@ import de.jrgreen.trainerapp.object.TraineeList;
 import de.jrgreen.trainerapp.object.Trainer;
 import de.jrgreen.trainerapp.object.TrainerList;
 
+/**
+ * Helper class; to receive and send data to Googlesheets
+ *
+ * Data from Googlesheets is currently received in CSV format to avoid the login / verification process
+ *
+ * There are 2 sheets currently:
+ * Runner sheet: contains Lists of Trainees and Trainers witch is bundled to a List of Runners.
+ * @see Runner
+ * @see Trainer
+ * @see Trainee
+ * Feedback sheet: contains a List of the posted Feedback.
+ * @see Feedback
+ *
+ */
 public class SheetHelper {
 
     private static final String RUNNERSHEET_GET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTAa_8Q7SXb-E8ai0MtVCMNR3s1S_WAecJR7nyULdMNQv1Hc545TekTFO4VyW-uWjVEcG1ADFZfGCnA/pub?gid=0&single=true&output=csv";
@@ -60,7 +74,7 @@ public class SheetHelper {
         });
 
         int socketTimeOut = 5000;
-        RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeOut,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeOut,2,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         stringRequest.setRetryPolicy(retryPolicy);
 
         stringRequest.setShouldCache(false);
