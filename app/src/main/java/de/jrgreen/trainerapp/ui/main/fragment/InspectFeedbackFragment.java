@@ -23,11 +23,8 @@ import de.jrgreen.trainerapp.object.Trainee;
 import de.jrgreen.trainerapp.object.Trainer;
 import de.jrgreen.trainerapp.recycler.adapter.DetailAdapter;
 import de.jrgreen.trainerapp.recycler.adapter.TopicAdapter;
-import de.jrgreen.trainerapp.ui.main.MainViewModel;
 
 public class InspectFeedbackFragment extends Fragment {
-
-    private MainViewModel mViewModel;
 
     private TextView traineeNameTextView;
     private RecyclerView topicView;

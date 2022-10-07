@@ -35,12 +35,8 @@ import de.jrgreen.trainerapp.object.Trainer;
 import de.jrgreen.trainerapp.recycler.adapter.DetailAdapter;
 import de.jrgreen.trainerapp.recycler.adapter.TopicAdapter;
 import de.jrgreen.trainerapp.R;
-import de.jrgreen.trainerapp.ui.main.MainActivity;
-import de.jrgreen.trainerapp.ui.main.MainViewModel;
 
 public class AddFeedbackFragment extends Fragment {
-
-    private MainViewModel mViewModel;
 
     private TextView traineeNameTextView;
     private RecyclerView topicView;

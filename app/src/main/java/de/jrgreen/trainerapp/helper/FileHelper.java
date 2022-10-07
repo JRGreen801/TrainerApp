@@ -25,6 +25,10 @@ import de.jrgreen.trainerapp.object.Feedback;
 import de.jrgreen.trainerapp.object.TraineeList;
 import de.jrgreen.trainerapp.ui.main.MainActivity;
 
+/**
+ * FileHelper was used to test the Ui and fill it with data before SheetHelper was implemented.
+ * @see SheetHelper
+ */
 public class FileHelper {
 
     /**
