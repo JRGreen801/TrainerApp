@@ -63,32 +63,32 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailViewHolder> {
                 break;
         }
 
-
-        holder.getImageView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                View viewInfalted = LayoutInflater.from(view.getContext()).inflate(R.layout.detail_image_dialog_layout, (ViewGroup) view.getParent(), false);
-                final ImageView detailImage = viewInfalted.findViewById(R.id.detail_dialog_imageView);
-                final TextView detailTextView = viewInfalted.findViewById(R.id.detail_dialog_textView);
-                detailImage.setImageDrawable(holder.getImageView().getDrawable());
-                detailTextView.setText("Dies ist ein beschreibender Text mit Absätzen\n\nUm zu Testen wie das ganze Aussieht und ob man das so machen kann\n\n" +
-                                       "Dies ist ein beschreibender Text mit Absätzen\n\nUm zu Testen wie das ganze Aussieht und ob man das so machen kann\n\n" +
-                                       "Dies ist ein beschreibender Text mit Absätzen\n\nUm zu Testen wie das ganze Aussieht und ob man das so machen kann\n\n");
-                builder.setTitle(holder.getDetailText().getText());
-                builder.setView(viewInfalted);
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        if (viewInfalted.getParent() != null){
-                            ((ViewGroup)viewInfalted.getParent()).removeView(viewInfalted);
-                        }
-                    }
-                });
-                builder.show();
-            }
-        });
+        // < ONCLICK CONTENT IN DEVELOPMENT > //
+//        holder.getImageView().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+//                View viewInfalted = LayoutInflater.from(view.getContext()).inflate(R.layout.detail_image_dialog_layout, (ViewGroup) view.getParent(), false);
+//                final ImageView detailImage = viewInfalted.findViewById(R.id.detail_dialog_imageView);
+//                final TextView detailTextView = viewInfalted.findViewById(R.id.detail_dialog_textView);
+//                detailImage.setImageDrawable(holder.getImageView().getDrawable());
+//                detailTextView.setText("Dies ist ein beschreibender Text mit Absätzen\n\nUm zu Testen wie das ganze Aussieht und ob man das so machen kann\n\n" +
+//                                       "Dies ist ein beschreibender Text mit Absätzen\n\nUm zu Testen wie das ganze Aussieht und ob man das so machen kann\n\n" +
+//                                       "Dies ist ein beschreibender Text mit Absätzen\n\nUm zu Testen wie das ganze Aussieht und ob man das so machen kann\n\n");
+//                builder.setTitle(holder.getDetailText().getText());
+//                builder.setView(viewInfalted);
+//                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        dialogInterface.dismiss();
+//                        if (viewInfalted.getParent() != null){
+//                            ((ViewGroup)viewInfalted.getParent()).removeView(viewInfalted);
+//                        }
+//                    }
+//                });
+//                builder.show();
+//            }
+//      });
 
         if (selectedRatings.isEditMode()) {
             holder.getDetailCheckBox().setEnabled(true);
