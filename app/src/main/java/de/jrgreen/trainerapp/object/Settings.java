@@ -17,16 +17,18 @@ public class Settings {
     public int detailCount;
     public List<Topic> topics;
     public List<Detail> details;
+    public String hub;
 
-    private Settings(List<Topic> topics, List<Detail> details) {
+    private Settings(List<Topic> topics, List<Detail> details, String hub) {
         this.topics = topics;
         this.details = details;
         topicCount = topics.size();
         detailCount = details.size();
+        this.hub = hub;
     }
 
-    public static void set(List<Topic> topics, List<Detail> details) {
-        Settings.instance = new Settings(topics, details);
+    public static void set(List<Topic> topics, List<Detail> details, String hub) {
+        Settings.instance = new Settings(topics, details, hub);
     }
 
     public static void set(Settings settingsInstance) {

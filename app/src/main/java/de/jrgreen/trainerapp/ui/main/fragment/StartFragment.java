@@ -2,6 +2,7 @@ package de.jrgreen.trainerapp.ui.main.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,13 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import de.jrgreen.trainerapp.BuildConfig;
 import de.jrgreen.trainerapp.R;
+import de.jrgreen.trainerapp.object.Settings;
 
 public class StartFragment extends Fragment {
 
     private Button feedbackIOButton;
     private Button trainerManualButton;
+    private TextView hubText;
 
     private boolean buttonsEnabled;
 
@@ -53,6 +59,9 @@ public class StartFragment extends Fragment {
                             .replace(R.id.frameContainer, new SelectionFragment())
                             .commit();
                 }
+                else {
+                    Toast.makeText(getContext(), "wrong password!", Toast.LENGTH_LONG).show();
+                }
                 input.setText("");
                 if (viewInfalted.getParent() != null) {
                     ((ViewGroup) viewInfalted.getParent()).removeView(viewInfalted);
@@ -75,6 +84,9 @@ public class StartFragment extends Fragment {
             }
         });
 
+        hubText = view.findViewById(R.id.hub_text);
+        hubText.setText(Settings.get().hub + " - v" + BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_TYPE);
+
         return view;
     }
 
@@ -84,6 +96,6 @@ public class StartFragment extends Fragment {
 
     public void setButtonsEnabled(boolean enabled, boolean debug){
         feedbackIOButton.setEnabled(enabled);
-        trainerManualButton.setEnabled(debug); //<-- DISABLED WHILE BUILDING FEATURE
+        trainerManualButton.setEnabled(!debug); //<-- DISABLED WHILE BUILDING FEATURE
     }
 }

@@ -18,13 +18,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.jrgreen.trainerapp.R;
 import de.jrgreen.trainerapp.helper.FileHelper;
+import de.jrgreen.trainerapp.helper.FireStoreHelper;
 import de.jrgreen.trainerapp.helper.SheetHelper;
+import de.jrgreen.trainerapp.listener.OnRequestResultListener;
 import de.jrgreen.trainerapp.object.Feedback;
 import de.jrgreen.trainerapp.object.FeedbackList;
 import de.jrgreen.trainerapp.object.RunnerList;
@@ -136,30 +139,35 @@ public class SelectionFragment extends Fragment {
          Trainer AddButton init
          */
         AlertDialog.Builder trainerInputBuilder = new AlertDialog.Builder(getContext());
-        trainerInputBuilder.setTitle("Name des Trainers eingeben");
-        View trainerViewInfalted = LayoutInflater.from(getContext()).inflate(R.layout.freetext_input_card_view, (ViewGroup) getView(), false);
-        final EditText trainerInput = (EditText) trainerViewInfalted.findViewById(R.id.freeform_feedback_editText);
+        trainerInputBuilder.setTitle("Name und Personalnummer des Trainers eingeben");
+        View trainerViewInfalted = LayoutInflater.from(getContext()).inflate(R.layout.runner_input_card_view, (ViewGroup) getView(), false);
+        final EditText trainerNameInput = (EditText) trainerViewInfalted.findViewById(R.id.name_editText);
+        final EditText trainerEmployee_ID_Input = (EditText) trainerViewInfalted.findViewById(R.id.employee_id_editText);
         trainerInputBuilder.setView(trainerViewInfalted);
         trainerInputBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
 
-                Trainer newTrainer = new Trainer(trainerInput.getText().toString(), trainerInput.getText().toString().trim().toLowerCase());
-                TrainerList.get().add(newTrainer);
-                trainerArrayAdapter.add(newTrainer);
-                trainerArrayAdapter.notifyDataSetChanged();
-                trainerSpinner.setVisibility(View.VISIBLE);
-                addTrainerButton.setText("Add");
-                ExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-                executor.execute(new Runnable() {
+                Trainer newTrainer = new Trainer(trainerNameInput.getText().toString(), trainerEmployee_ID_Input.getText().toString().toUpperCase());
+                FireStoreHelper.addRunner(getActivity(), newTrainer, new OnRequestResultListener() {
                     @Override
-                    public void run() {
-                        FileHelper.saveTrainers(getContext(), TrainerList.get());
-                        trainerSpinner.setSelection(TrainerList.getIndexByID(newTrainer.getEmployee_ID())+1);
+                    public void onResult(String response) {}
+
+                    @Override
+                    public void onResult(boolean response) {
+                        if (response){
+                            TrainerList.get().add(newTrainer);
+                            trainerArrayAdapter.add(newTrainer);
+                            trainerArrayAdapter.notifyDataSetChanged();
+                            trainerSpinner.setVisibility(View.VISIBLE);
+                            addTrainerButton.setText("Add");
+                            trainerSpinner.setSelection(TrainerList.getIndexByID(newTrainer.getEmployee_ID())+1);
+                        }else {
+                            Toast.makeText(getContext(), "failed to add Trainer", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
-
                 if (trainerViewInfalted.getParent() != null){
                     ((ViewGroup)trainerViewInfalted.getParent()).removeView(trainerViewInfalted);
                 }
@@ -190,29 +198,34 @@ public class SelectionFragment extends Fragment {
         addTraineeButton = view.findViewById(R.id.add_trainee_button);
         AlertDialog.Builder traineeInputBuilder = new AlertDialog.Builder(getContext());
         traineeInputBuilder.setTitle("Name des Trainees eingeben");
-        View traineeViewInfalted = LayoutInflater.from(getContext()).inflate(R.layout.freetext_input_card_view, (ViewGroup) getView(), false);
-        final EditText traineeInput = (EditText) traineeViewInfalted.findViewById(R.id.freeform_feedback_editText);
+        View traineeViewInfalted = LayoutInflater.from(getContext()).inflate(R.layout.runner_input_card_view, (ViewGroup) getView(), false);
+        final EditText traineeNameInput = (EditText) traineeViewInfalted.findViewById(R.id.name_editText);
+        final EditText traineeEmployee_ID_Input = (EditText) traineeViewInfalted.findViewById(R.id.employee_id_editText);
         traineeInputBuilder.setView(traineeViewInfalted);
         traineeInputBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
 
-                Trainee newTrainee = new Trainee(traineeInput.getText().toString(), traineeInput.getText().toString().trim().toLowerCase());
-                TraineeList.get().add(newTrainee);
-                traineeArrayAdapter.add(newTrainee);
-                traineeArrayAdapter.notifyDataSetChanged();
-                traineeSpinner.setVisibility(View.VISIBLE);
-                addTraineeButton.setText("Add");
-                ExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-                executor.execute(new Runnable() {
+                Trainee newTrainee = new Trainee(traineeNameInput.getText().toString(), traineeEmployee_ID_Input.getText().toString().toUpperCase());
+                FireStoreHelper.addRunner(getActivity(), newTrainee, new OnRequestResultListener() {
                     @Override
-                    public void run() {
-                        FileHelper.saveTrainees(getContext(), TraineeList.get());
-                        traineeSpinner.setSelection(TraineeList.getIndexByID(newTrainee.getEmployee_ID())+1);
+                    public void onResult(String response) {}
+
+                    @Override
+                    public void onResult(boolean response) {
+                        if (response){
+                            TraineeList.get().add(newTrainee);
+                            traineeArrayAdapter.add(newTrainee);
+                            traineeArrayAdapter.notifyDataSetChanged();
+                            traineeSpinner.setVisibility(View.VISIBLE);
+                            addTraineeButton.setText("Add");
+                            traineeSpinner.setSelection(TraineeList.getIndexByID(newTrainee.getEmployee_ID())+1);
+                        }else {
+                            Toast.makeText(getContext(), "failed to add Trainee", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
-
                 if (traineeViewInfalted.getParent() != null){
                     ((ViewGroup)traineeViewInfalted.getParent()).removeView(traineeViewInfalted);
                 }

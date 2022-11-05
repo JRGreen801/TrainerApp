@@ -34,6 +34,7 @@ import de.jrgreen.trainerapp.helper.FileHelper;
 import de.jrgreen.trainerapp.helper.FireStoreHelper;
 import de.jrgreen.trainerapp.helper.SheetHelper;
 import de.jrgreen.trainerapp.listener.OnRequestResultListener;
+import de.jrgreen.trainerapp.object.Feedback;
 import de.jrgreen.trainerapp.object.FeedbackList;
 import de.jrgreen.trainerapp.object.Runner;
 import de.jrgreen.trainerapp.object.RunnerList;
@@ -79,37 +80,6 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.frameContainer, new StartFragment(false))
                 .commit();
 
-        /*SheetHelper sheetHelper = new SheetHelper(MainActivity.this);
-
-        sheetHelper.loadRunner(new OnRequestResultListener() {
-            @Override
-            public void onResult(String response) {
-                RunnerList.set(sheetHelper.CSVtoRunnerList(response));
-                getSupportActionBar().setHomeButtonEnabled(false);
-                TrainerList.set(RunnerList.getTrainers());
-                TraineeList.set(RunnerList.getTrainees());
-                Log.e("STEP" ,"1");
-                sheetHelper.loadFeedback(new OnRequestResultListener() {
-                    @Override
-                    public void onResult(String response) {
-                        Log.e("STEP", "2");
-                        Log.e("FEEDBACK LENGTH", String.valueOf(FeedbackList.get().size()));
-                        FeedbackList.set(sheetHelper.CSVtoFeedbackList(response));
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.frameContainer, new StartFragment(true))
-                                .commit();
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
-            }
-        });*/
-        Future<ArrayList<Runner>> runners = FireStoreHelper.getRunners(this);
-        while (!runners.isDone()){}
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frameContainer, new StartFragment(true))
-                .commit();
-        progressBar.setVisibility(View.GONE);
-
         ExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         executor.execute(() -> {
             Settings.set(FileHelper.convertJsonToSettings(MainActivity.this));
@@ -120,6 +90,32 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        FireStoreHelper.getRunners(this, new OnRequestResultListener() {
+            @Override
+            public void onResult(String response) {}
+
+            @Override
+            public void onResult(boolean response) {
+                if (response) {
+                    FireStoreHelper.getFeedback(getParent(), new OnRequestResultListener() {
+                        @Override
+                        public void onResult(String response) {
+                        }
+
+                        @Override
+                        public void onResult(boolean response) {
+                            if (response){
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.frameContainer, new StartFragment(true))
+                                        .commit();
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+                }
+            }
+        });
 
     }
 

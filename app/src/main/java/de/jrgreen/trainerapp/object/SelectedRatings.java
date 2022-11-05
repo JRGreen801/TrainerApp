@@ -9,11 +9,11 @@ public class SelectedRatings extends ArrayList<Rating> {
     private int topicCount;
     private int detailCount;
 
-    public SelectedRatings(boolean loadSettrings, boolean editMode) {
+    public SelectedRatings(boolean loadSettings, boolean editMode) {
         topicCount = 0;
         detailCount = 0;
         this.editMode = editMode;
-        if (loadSettrings) {
+        if (loadSettings) {
             for (Topic t :
                     Settings.get().topics) {
                 add(new Rating(t.get_short(), (short) -1));

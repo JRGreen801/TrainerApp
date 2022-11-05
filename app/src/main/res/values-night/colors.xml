@@ -11,5 +11,7 @@
     <color name="ovalButton">#4CAF50</color>
     <color name="border">#A1A1A1</color>
 
+    <color name="text_secondary">#6A6A6A</color>
+
     <color name="toolbar_icon">#FFFFFF</color>
 </resources>

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,8 +26,10 @@ import java.util.Calendar;
 import java.util.Iterator;
 
 import de.jrgreen.trainerapp.helper.FileHelper;
+import de.jrgreen.trainerapp.helper.FireStoreHelper;
 import de.jrgreen.trainerapp.helper.SheetHelper;
 import de.jrgreen.trainerapp.listener.OnRatingChangeListener;
+import de.jrgreen.trainerapp.listener.OnRequestResultListener;
 import de.jrgreen.trainerapp.object.Feedback;
 import de.jrgreen.trainerapp.object.FeedbackList;
 import de.jrgreen.trainerapp.object.Rating;
@@ -91,12 +95,22 @@ public class AddFeedbackFragment extends Fragment {
                 dialogInterface.dismiss();
                 date = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
 
-                SheetHelper.postFeedback(getActivity(), new Feedback(date, selectedTrainee, selectedTrainer, selectedRatings,input.getText().toString()), progressBar);
+                FireStoreHelper.addFeedback(getActivity(), new Feedback(date, selectedTrainee, selectedTrainer, selectedRatings, input.getText().toString()), new OnRequestResultListener() {
+                    @Override
+                    public void onResult(String response) {}
 
-                if (viewInfalted.getParent() != null){
-                    ((ViewGroup)viewInfalted.getParent()).removeView(viewInfalted);
-                }
-                getParentFragmentManager().beginTransaction().replace(container.getId(), new SelectionFragment(selectedTrainer, selectedTrainee)).commitNow();
+                    @Override
+                    public void onResult(boolean response) {
+                        Log.e("POST RESULT", String.valueOf(response));
+                        if (response){
+                            FeedbackList.get().add(new Feedback(date, selectedTrainee, selectedTrainer, selectedRatings, input.getText().toString()));
+                        }
+                        if (viewInfalted.getParent() != null){
+                            ((ViewGroup)viewInfalted.getParent()).removeView(viewInfalted);
+                        }
+                        getParentFragmentManager().beginTransaction().replace(container.getId(), new SelectionFragment(selectedTrainer, selectedTrainee)).commitNow();
+                    }
+                });
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

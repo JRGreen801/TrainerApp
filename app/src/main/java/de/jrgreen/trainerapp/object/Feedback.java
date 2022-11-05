@@ -1,6 +1,7 @@
 package de.jrgreen.trainerapp.object;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Describes a Row in the Feedback sheet as an Object.
@@ -28,6 +29,29 @@ public class Feedback {
         this.trainee = trainee;
         this.trainer = trainer;
         this.ratings = ratings;
+    }
+
+    public static Feedback fromMap(Map map){
+        ArrayList<Rating> ratings = new ArrayList<>();
+        ratings.add(new Rating("CS", Math.toIntExact((Long) map.get("CS"))));
+        ratings.add(new Rating("DP", Math.toIntExact((Long) map.get("DP"))));
+        ratings.add(new Rating("DS", Math.toIntExact((Long) map.get("DS"))));
+        ratings.add(new Rating("TA", Math.toIntExact((Long) map.get("TA"))));
+        ratings.add(new Rating("TP", Math.toIntExact((Long) map.get("TP"))));
+
+        ratings.add(new Rating("FO", Math.toIntExact((Long) map.get("FO"))));
+        ratings.add(new Rating("LT", Math.toIntExact((Long) map.get("LT"))));
+        ratings.add(new Rating("PF", Math.toIntExact((Long) map.get("PF"))));
+        ratings.add(new Rating("ST", Math.toIntExact((Long) map.get("ST"))));
+
+        return new Feedback(
+                map.get("date").toString(),
+                TraineeList.getTraineeByID(map.get("trainee_id").toString()),
+                TrainerList.getTrainerByID(map.get("trainer_id").toString()),
+                ratings,
+                map.get("freeform").toString()
+                );
+
     }
 
     public Trainee getTrainee() {

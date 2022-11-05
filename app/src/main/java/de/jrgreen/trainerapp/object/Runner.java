@@ -24,7 +24,6 @@ public abstract class Runner {
     }
 
     public static Runner fromMap(Map map){
-        Log.e("MAP", map.toString());
         if (map.get("role").equals("trainer")){
             Log.e("MAP TRAINER", map.get("employee_id").toString());
             return new Trainer(map.get("name").toString(), map.get("employee_id").toString());

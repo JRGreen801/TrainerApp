@@ -78,7 +78,6 @@ public class TrainerManualFragment extends Fragment {
                     training_manual_dropImg.setImageResource(R.drawable.ic_baseline_keyboard_arrow_down_24);
                     training_manual_container.setVisibility(View.GONE);
                 }
-                FireStoreHelper.getRunners(getActivity());
             }
         });
 
