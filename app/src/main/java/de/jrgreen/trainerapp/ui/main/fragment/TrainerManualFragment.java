@@ -2,14 +2,31 @@ package de.jrgreen.trainerapp.ui.main.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import de.jrgreen.trainerapp.R;
+import de.jrgreen.trainerapp.helper.FireStoreHelper;
 
 public class TrainerManualFragment extends Fragment {
 
@@ -61,6 +78,7 @@ public class TrainerManualFragment extends Fragment {
                     training_manual_dropImg.setImageResource(R.drawable.ic_baseline_keyboard_arrow_down_24);
                     training_manual_container.setVisibility(View.GONE);
                 }
+                FireStoreHelper.getRunners(getActivity());
             }
         });
 

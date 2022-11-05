@@ -84,6 +84,6 @@ public class StartFragment extends Fragment {
 
     public void setButtonsEnabled(boolean enabled, boolean debug){
         feedbackIOButton.setEnabled(enabled);
-        trainerManualButton.setEnabled(!debug); //<-- DISABLED WHILE BUILDING FEATURE
+        trainerManualButton.setEnabled(debug); //<-- DISABLED WHILE BUILDING FEATURE
     }
 }

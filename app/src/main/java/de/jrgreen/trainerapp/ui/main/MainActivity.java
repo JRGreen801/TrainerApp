@@ -20,15 +20,22 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import de.jrgreen.trainerapp.R;
 import de.jrgreen.trainerapp.helper.FileHelper;
+import de.jrgreen.trainerapp.helper.FireStoreHelper;
 import de.jrgreen.trainerapp.helper.SheetHelper;
 import de.jrgreen.trainerapp.listener.OnRequestResultListener;
 import de.jrgreen.trainerapp.object.FeedbackList;
+import de.jrgreen.trainerapp.object.Runner;
 import de.jrgreen.trainerapp.object.RunnerList;
 import de.jrgreen.trainerapp.object.Settings;
 import de.jrgreen.trainerapp.object.TraineeList;
@@ -72,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.frameContainer, new StartFragment(false))
                 .commit();
 
-        SheetHelper sheetHelper = new SheetHelper(MainActivity.this);
+        /*SheetHelper sheetHelper = new SheetHelper(MainActivity.this);
 
         sheetHelper.loadRunner(new OnRequestResultListener() {
             @Override
@@ -95,7 +102,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-        });
+        });*/
+        Future<ArrayList<Runner>> runners = FireStoreHelper.getRunners(this);
+        while (!runners.isDone()){}
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frameContainer, new StartFragment(true))
+                .commit();
+        progressBar.setVisibility(View.GONE);
 
         ExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         executor.execute(() -> {

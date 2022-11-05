@@ -1,5 +1,9 @@
 package de.jrgreen.trainerapp.object;
 
+import android.util.Log;
+
+import java.util.Map;
+
 /**
  * Describes a basic Runner without role specification, extended by Trainer and Trainee.
  * @see Trainer Object describing a Trainer
@@ -17,6 +21,18 @@ public abstract class Runner {
     public Runner(String name, String employee_ID) {
         this.name = name;
         this.employee_ID = employee_ID;
+    }
+
+    public static Runner fromMap(Map map){
+        Log.e("MAP", map.toString());
+        if (map.get("role").equals("trainer")){
+            Log.e("MAP TRAINER", map.get("employee_id").toString());
+            return new Trainer(map.get("name").toString(), map.get("employee_id").toString());
+        } else
+        if (map.get("role").equals("trainee")){
+            return new Trainee(map.get("name").toString(), map.get("employee_id").toString());
+        }
+        return null;
     }
 
     public String getName() {
