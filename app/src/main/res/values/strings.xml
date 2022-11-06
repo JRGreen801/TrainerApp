@@ -1,28 +1,33 @@
 <resources>
-    <string name="app_name">TrainerApp</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome!"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
+    <string name="app_name" translatable="false">TrainerApp</string>
 
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
+    <string name="button_feedback_io">Feedback I/O</string>
+    <string name="button_training_manual">Training Manual</string>
 
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="password_required">Password required</string>
+    
+    <string name="select_trainer">[Select a Trainer]</string>
+    <string name="select_trainee">[Select a Trainee]</string>
+    <string name="previous_shifts">Previous shifts:</string>
+    <string name="last_with">Last with:</string>
+
+    <string name="fragment_view_feedback">View Feedback</string>
+    <string name="fragment_add_feedback">Add Feedback</string>
+    <string name="deficit_feedback">About Deficits</string>
+    <string name="important_details">Important details</string>
+    <string name="went_wrong">What went wrong?</string>
+
+    <string name="fragment_training_manual">Training Manual</string>
+    <string name="training_schedule"> Training Schedule</string>
+    <string name="categories">Categories</string>
+    <string name="details">Details</string>
+    <string name="button_finalize">Finalize Training</string>
+    <string name="trainer_input_header">Enter the trainers name and employee ID</string>
+    <string name="trainee_input_header">Enter the trainees name and employee ID</string>
+    <string name="button_add_trainer">Add Trainer</string>
+    <string name="button_add_trainee">Add Trainee</string>
+    <string name="finalize_check_header">Final Check</string>
+    <string name="finalize_check_text">Academy finished?&#xA;&#xA;access to all Apps?</string>
+
+
 </resources>

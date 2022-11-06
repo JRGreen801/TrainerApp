@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="6dp"
-                    android:text="Trainingsplan"
+                    android:text="@string/training_schedule"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -69,7 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="6dp"
-                    android:text="Kategorien"
+                    android:text="@string/categories"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -97,7 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="6dp"
-                    android:text="Details"
+                    android:text="@string/details"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 

@@ -23,14 +23,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingVertical="20dp"
-            android:text="Feedback I/O" />
+            android:text="@string/button_feedback_io" />
 
         <Button
             android:id="@+id/trainer_manual_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingVertical="20dp"
-            android:text="Trainings Handbuch" />
+            android:text="@string/button_training_manual" />
     </LinearLayout>
 
     <TextView

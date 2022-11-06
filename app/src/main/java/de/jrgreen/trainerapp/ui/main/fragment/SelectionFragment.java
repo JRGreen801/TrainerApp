@@ -81,7 +81,7 @@ public class SelectionFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_selection, container, false);
 
         TextView toolbarTitle = getActivity().findViewById(R.id.toolbar_title);
-        toolbarTitle.setText("Trainer App");
+        toolbarTitle.setText(R.string.app_name);
 
 
         selectionDetailLayout = view.findViewById(R.id.selection_detail_layout);
@@ -140,11 +140,11 @@ public class SelectionFragment extends Fragment {
          Trainer AddButton init
          */
         AlertDialog.Builder trainerInputBuilder = new AlertDialog.Builder(getContext());
-        trainerInputBuilder.setTitle("Name und Personalnummer des Trainers eingeben");
-        View trainerViewInfalted = LayoutInflater.from(getContext()).inflate(R.layout.runner_input_card_view, (ViewGroup) getView(), false);
-        final EditText trainerNameInput = (EditText) trainerViewInfalted.findViewById(R.id.name_editText);
-        final EditText trainerEmployee_ID_Input = (EditText) trainerViewInfalted.findViewById(R.id.employee_id_editText);
-        trainerInputBuilder.setView(trainerViewInfalted);
+        trainerInputBuilder.setTitle(R.string.trainer_input_header);
+        View trainerViewInflated = LayoutInflater.from(getContext()).inflate(R.layout.runner_input_card_view, (ViewGroup) getView(), false);
+        final EditText trainerNameInput = (EditText) trainerViewInflated.findViewById(R.id.name_editText);
+        final EditText trainerEmployee_ID_Input = (EditText) trainerViewInflated.findViewById(R.id.employee_id_editText);
+        trainerInputBuilder.setView(trainerViewInflated);
         trainerInputBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -169,8 +169,8 @@ public class SelectionFragment extends Fragment {
                         }
                     }
                 });
-                if (trainerViewInfalted.getParent() != null){
-                    ((ViewGroup)trainerViewInfalted.getParent()).removeView(trainerViewInfalted);
+                if (trainerViewInflated.getParent() != null){
+                    ((ViewGroup)trainerViewInflated.getParent()).removeView(trainerViewInflated);
                 }
             }
         });
@@ -179,8 +179,8 @@ public class SelectionFragment extends Fragment {
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
 
-                if (trainerViewInfalted.getParent() != null) {
-                    ((ViewGroup) trainerViewInfalted.getParent()).removeView(trainerViewInfalted);
+                if (trainerViewInflated.getParent() != null) {
+                    ((ViewGroup) trainerViewInflated.getParent()).removeView(trainerViewInflated);
                 }
             }
         });
@@ -198,7 +198,7 @@ public class SelectionFragment extends Fragment {
          */
         addTraineeButton = view.findViewById(R.id.add_trainee_button);
         AlertDialog.Builder traineeInputBuilder = new AlertDialog.Builder(getContext());
-        traineeInputBuilder.setTitle("Name des Trainees eingeben");
+        traineeInputBuilder.setTitle(R.string.trainee_input_header);
         View traineeViewInfalted = LayoutInflater.from(getContext()).inflate(R.layout.runner_input_card_view, (ViewGroup) getView(), false);
         final EditText traineeNameInput = (EditText) traineeViewInfalted.findViewById(R.id.name_editText);
         final EditText traineeEmployee_ID_Input = (EditText) traineeViewInfalted.findViewById(R.id.employee_id_editText);
@@ -264,13 +264,13 @@ public class SelectionFragment extends Fragment {
 
         if (TrainerList.get().isEmpty()){
             trainerSpinner.setVisibility(View.GONE);
-            addTrainerButton.setText("Add Trainer");
+            addTrainerButton.setText(R.string.button_add_trainer);
         }
         if (TraineeList.get().isEmpty()){
             selectionDetailLayout.setVisibility(View.GONE);
             peterView.setVisibility(View.VISIBLE);
             traineeSpinner.setVisibility(View.GONE);
-            addTraineeButton.setText("Add Trainee");
+            addTraineeButton.setText(R.string.button_add_trainee);
         }
 
         if (lastTrainee != null){
@@ -303,7 +303,6 @@ public class SelectionFragment extends Fragment {
                     } else {
                         lastShiftWithTextView.setVisibility(View.GONE);
                         lastShiftWithText.setVisibility(View.GONE);
-                        lastShiftWithTextView.setText("Niemandem");
 
                         inspectFeedbackButton.setVisibility(View.GONE);
                     }
@@ -341,7 +340,7 @@ public class SelectionFragment extends Fragment {
 
         //init finalize Button
         AlertDialog.Builder finalizeBuilder = new AlertDialog.Builder(getContext());
-        finalizeBuilder.setTitle("Abschluss Check");
+        finalizeBuilder.setTitle(R.string.finalize_check_header);
         View finalizeViewInfalted = LayoutInflater.from(getContext()).inflate(R.layout.finalize_dialog_layout, (ViewGroup) getView(), false);
         final TextView finalizeDialogTextView = (TextView) traineeViewInfalted.findViewById(R.id.finalize_dialog_textView);
         finalizeBuilder.setView(finalizeViewInfalted);

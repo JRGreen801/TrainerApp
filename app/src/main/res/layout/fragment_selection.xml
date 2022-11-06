@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:paddingHorizontal="16dp"
-                    android:text="Schichten bisher:"
+                    android:text="@string/previous_shifts"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -147,7 +147,7 @@
                 android:id="@+id/last_with_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Letzte Schicht bei:"
+                android:text="@string/last_with"
                 android:textAlignment="center"
                 android:textSize="20sp" />
 
@@ -209,7 +209,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@drawable/bottom_button_shape"
-        android:text="Training abschließen"
+        android:text="@string/button_finalize"
         android:textSize="16sp"
         android:textStyle="bold"
         android:visibility="gone"
