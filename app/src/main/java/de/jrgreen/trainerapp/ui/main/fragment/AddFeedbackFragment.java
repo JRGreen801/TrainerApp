@@ -104,6 +104,8 @@ public class AddFeedbackFragment extends Fragment {
                         Log.e("POST RESULT", String.valueOf(response));
                         if (response){
                             FeedbackList.get().add(new Feedback(date, selectedTrainee, selectedTrainer, selectedRatings, input.getText().toString()));
+                        } else {
+                            Toast.makeText(getContext(), "failed to post feedback", Toast.LENGTH_LONG).show();
                         }
                         if (viewInfalted.getParent() != null){
                             ((ViewGroup)viewInfalted.getParent()).removeView(viewInfalted);
@@ -140,12 +142,25 @@ public class AddFeedbackFragment extends Fragment {
                     builder.show();
                 }else {
                     date = new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
-                    FileHelper.saveToJson(getContext(),
-                        new Feedback(date, selectedTrainee, selectedTrainer, selectedRatings, input.getText().toString()));
-                    FeedbackList.get().add(new Feedback(date, selectedTrainee, selectedTrainer, selectedRatings, input.getText().toString()));
-                    SheetHelper.postFeedback(getActivity(), new Feedback(date, selectedTrainee, selectedTrainer, selectedRatings,input.getText().toString()), progressBar);
+                    FireStoreHelper.addFeedback(getActivity(),
+                            new Feedback(date, selectedTrainee, selectedTrainer, selectedRatings, input.getText().toString()), new OnRequestResultListener() {
+                                @Override
+                                public void onResult(String response) {}
 
-                    getParentFragmentManager().beginTransaction().replace(container.getId(), new SelectionFragment(selectedTrainer, selectedTrainee)).commitNow();
+                                @Override
+                                public void onResult(boolean response) {
+                                    Log.e("POST RESULT", String.valueOf(response));
+                                    if (response){
+                                        FeedbackList.get().add(new Feedback(date, selectedTrainee, selectedTrainer, selectedRatings, input.getText().toString()));
+                                    } else {
+                                        Toast.makeText(getContext(), "failed to post feedback", Toast.LENGTH_LONG).show();
+                                    }
+                                    if (viewInfalted.getParent() != null){
+                                        ((ViewGroup)viewInfalted.getParent()).removeView(viewInfalted);
+                                    }
+                                    getParentFragmentManager().beginTransaction().replace(container.getId(), new SelectionFragment(selectedTrainer, selectedTrainee)).commitNow();
+                                }
+                            });
                 }
 
             }

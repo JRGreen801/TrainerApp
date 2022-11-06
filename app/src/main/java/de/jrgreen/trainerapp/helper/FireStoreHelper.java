@@ -12,6 +12,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -100,7 +101,7 @@ public class FireStoreHelper {
             data.put("role", "trainer");
         }
         if (runner instanceof Trainee){
-            data.put("role", "trainer");
+            data.put("role", "trainee");
         }
         data.put("hub", Settings.get().hub);
 
@@ -136,6 +137,42 @@ public class FireStoreHelper {
                     onRequestResultListener.onResult(true);
                 }
                 else {
+                    onRequestResultListener.onResult(false);
+                }
+            }
+        });
+    }
+
+    public static void removeRunner(Activity activity, Runner runner, OnRequestResultListener onRequestResultListener){
+        auth(activity);
+
+        db.collection("runners").whereEqualTo("employee_id", runner.getEmployee_ID()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for(DocumentSnapshot ds : task.getResult().getDocuments()){
+                        ds.getReference().delete();
+                    }
+                    onRequestResultListener.onResult(true);
+                } else  {
+                    onRequestResultListener.onResult(false);
+                }
+            }
+        });
+    }
+
+    public static void removeFeedback(Activity activity, Runner runner, OnRequestResultListener onRequestResultListener){
+        auth(activity);
+
+        db.collection("feedback").whereEqualTo("trainee_id", runner.getEmployee_ID()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for(DocumentSnapshot ds : task.getResult().getDocuments()){
+                        ds.getReference().delete();
+                    }
+                    onRequestResultListener.onResult(true);
+                } else  {
                     onRequestResultListener.onResult(false);
                 }
             }

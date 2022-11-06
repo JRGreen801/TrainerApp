@@ -164,7 +164,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="60dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -200,6 +200,22 @@
                 app:iconSize="60dp"
                 tools:ignore="SpeakableTextPresentCheck" />
         </LinearLayout>
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/finalize_training_button"
+        style="@style/BottomButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/bottom_button_shape"
+        android:text="Training abschließen"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

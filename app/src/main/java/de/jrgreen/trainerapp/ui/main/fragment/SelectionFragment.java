@@ -51,6 +51,7 @@ public class SelectionFragment extends Fragment {
     private Button addFeedbackButton;
     private Button inspectFeedbackButton;
     private ImageView peterView;
+    private Button finalizeTrainingButton;
 
     private Feedback last_feedback;
 
@@ -224,6 +225,7 @@ public class SelectionFragment extends Fragment {
                         }else {
                             Toast.makeText(getContext(), "failed to add Trainee", Toast.LENGTH_LONG).show();
                         }
+                        finalizeTrainingButton.setVisibility(View.GONE);
                     }
                 });
                 if (traineeViewInfalted.getParent() != null){
@@ -258,6 +260,8 @@ public class SelectionFragment extends Fragment {
         addFeedbackButton = view.findViewById(R.id.add_feedback_button);
         inspectFeedbackButton = view.findViewById(R.id.inspect_feedback_button);
 
+        finalizeTrainingButton = view.findViewById(R.id.finalize_training_button);
+
         if (TrainerList.get().isEmpty()){
             trainerSpinner.setVisibility(View.GONE);
             addTrainerButton.setText("Add Trainer");
@@ -283,6 +287,13 @@ public class SelectionFragment extends Fragment {
 
                     int count = FeedbackList.getShiftCountOfTrainee((Trainee) traineeSpinner.getItemAtPosition(i));
                     shiftCounterTextview.setText(Integer.toString(count));
+
+                    if (count >= 6){
+                        finalizeTrainingButton.setVisibility(View.VISIBLE);
+                    } else {
+                        finalizeTrainingButton.setVisibility(View.GONE);
+                    }
+
                     last_feedback = FeedbackList.getLastFeedback(((Trainee) traineeSpinner.getItemAtPosition(i)));
                     if (last_feedback != null) {
                         lastShiftWithTextView.setText(last_feedback.getTrainer().getName());
@@ -328,6 +339,74 @@ public class SelectionFragment extends Fragment {
             }
         });
 
+        //init finalize Button
+        AlertDialog.Builder finalizeBuilder = new AlertDialog.Builder(getContext());
+        finalizeBuilder.setTitle("Abschluss Check");
+        View finalizeViewInfalted = LayoutInflater.from(getContext()).inflate(R.layout.finalize_dialog_layout, (ViewGroup) getView(), false);
+        final TextView finalizeDialogTextView = (TextView) traineeViewInfalted.findViewById(R.id.finalize_dialog_textView);
+        finalizeBuilder.setView(finalizeViewInfalted);
+        finalizeBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+
+                FireStoreHelper.removeRunner(getActivity(), (Trainee) traineeSpinner.getSelectedItem(), new OnRequestResultListener() {
+                    @Override
+                    public void onResult(String response) {}
+
+                    @Override
+                    public void onResult(boolean response) {
+                        if (response){
+                            TraineeList.get().remove(traineeSpinner.getSelectedItem());
+                            traineeSpinner.setSelection(0);
+                            traineeArrayAdapter.remove((Trainee) traineeSpinner.getSelectedItem());
+                            traineeArrayAdapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(getContext(), "failed to delete Trainee", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+                FireStoreHelper.removeFeedback(getActivity(), (Trainee) traineeSpinner.getSelectedItem(), new OnRequestResultListener() {
+                    @Override
+                    public void onResult(String response) {}
+
+                    @Override
+                    public void onResult(boolean response) {
+                        if (response){
+                            for (Feedback f : FeedbackList.get()){
+                                if (f.getTrainee().equals(traineeSpinner.getSelectedItem())){
+                                    FeedbackList.get().remove(f);
+                                }
+                            }
+                            traineeSpinner.setSelection(0);
+                        } else {
+                            Toast.makeText(getContext(), "failed to delete Feedback", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+                if (finalizeViewInfalted.getParent() != null) {
+                    ((ViewGroup) finalizeViewInfalted.getParent()).removeView(finalizeViewInfalted);
+                }
+            }
+        });
+        finalizeBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+
+                if (finalizeViewInfalted.getParent() != null) {
+                    ((ViewGroup) finalizeViewInfalted.getParent()).removeView(finalizeViewInfalted);
+                }
+            }
+        });
+
+        finalizeTrainingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finalizeBuilder.show();
+            }
+        });
 
         return view;
     }
