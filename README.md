@@ -8,4 +8,4 @@ Currently a Hublead Overview is provided as a Google Sheet, importing all Feedba
 Support for multiple Hubs is implemented, but without PN-login Hubs neet too be assignt manualy.
 
 This Project is still in Development.
---> stable build .apk in release folder
+--> stable build .apk https://drive.google.com/file/d/1-gDffC85k7MCgNL8joD2lRepnQa9mygg/view?usp=sharing
